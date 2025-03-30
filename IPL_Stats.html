@@ -90,6 +90,46 @@
         <h2>History of IPL</h2>
         <p>The Indian Premier League (IPL) started in 2008 and has become one of the most popular cricket leagues in the world. It features franchises from different cities in India and attracts top international players.</p>
     </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("th").forEach(header => {
+        header.addEventListener("click", function () {
+            const table = header.closest("table");
+            const index = Array.from(header.parentNode.children).indexOf(header);
+            const rows = Array.from(table.querySelectorAll("tbody tr"));
+            const ascending = header.dataset.ascending === "true";
+            header.dataset.ascending = !ascending;
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.children[index].innerText.trim();
+                const cellB = rowB.children[index].innerText.trim();
+                return ascending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+            });
+            rows.forEach(row => table.querySelector("tbody").appendChild(row));
+        });
+    });
+
+    const searchInput = document.createElement("input");
+    searchInput.setAttribute("type", "text");
+    searchInput.setAttribute("placeholder", "Search Players...");
+    searchInput.classList.add("search-input");
+    document.body.insertBefore(searchInput, document.body.firstChild);
+
+    searchInput.addEventListener("input", function () {
+        const filter = searchInput.value.toLowerCase();
+        document.querySelectorAll("ul li").forEach(item => {
+            const text = item.innerText.toLowerCase();
+            item.style.display = text.includes(filter) ? "block" : "none";
+        });
+    });
+    const searchContainer = document.createElement("div");
+    searchContainer.classList.add("search-container");
+    searchContainer.appendChild(searchInput);
+    document.body.insertBefore(searchContainer, document.body.firstChild);
+});
+     
+
+    </script>
     
     <footer>
         <p>&copy; 2024 IPL Stats | Made for Cricket Fans</p>
